@@ -1,0 +1,79 @@
+============================================================================
+MULTI-RUN STABILITY ANALYSIS — WHITENED CONTEXTUAL
+K = 20 independent generation runs
+Calibration: fixed (seed=42) | Generation seeds: 1..20
+============================================================================
+
+============================================================================
+  WHITENED EXPERIMENT
+============================================================================
+  Runtime per run: mean=377s, total=7544s
+
+  OMNIBUS KRUSKAL-WALLIS (prompt-level, N=15/group)
+  Metric       Median p              IQR   Sig rate   Perm med   Perm sig
+  --------------------------------------------------------------------
+  H              0.0138 [0.002, 0.031]      90%       0.0115      95%
+  norm           0.5195 [0.339, 0.763]       0%       0.5251       0%
+  max_sim        0.6053 [0.251, 0.753]       0%       0.6113       0%
+
+  PAIRWISE (prompt-level Mann-Whitney)
+  Metric   Pair                Med p    Sig   Holm    Med r     r SD   Perm sig
+  --------------------------------------------------------------------------
+  H        T1-T2              0.4453   15%   15%   +0.093    0.229      10%
+  H        T1-T3              0.0108   90%   65%   +0.551    0.166      85%
+  H        T2-T3              0.0265   75%   30%   +0.480    0.099      70%
+
+  norm     T1-T2              0.3854    5%    0%   +0.116    0.207      10%
+  norm     T1-T3              0.6199    0%    0%   +0.036    0.151       0%
+  norm     T2-T3              0.5225    0%    0%   -0.062    0.174       0%
+
+  max_sim  T1-T2              0.4430    0%    0%   +0.133    0.187       5%
+  max_sim  T1-T3              0.3615    5%    0%   +0.182    0.182      10%
+  max_sim  T2-T3              0.6783    0%    0%   +0.027    0.115       0%
+
+  CONDITION MEANS (prompt-level, across runs)
+  Metric                 Type 1             Type 2             Type 3
+  ------------------------------------------------------------------
+  H           0.1026 +/- 0.0025  0.1049 +/- 0.0017  0.1136 +/- 0.0018
+  norm       13.8137 +/- 0.1885 13.9327 +/- 0.2249 13.9238 +/- 0.1321
+  max_sim     0.1751 +/- 0.0056  0.1815 +/- 0.0046  0.1818 +/- 0.0039
+
+  CONFUSION MATRIX (mean +/- std across 20 runs)
+                         Z1             Z2             Z3            Unc
+  --------------------------------------------------------------------
+       type1  0.027+/-0.005  0.111+/-0.019  0.212+/-0.016  0.650+/-0.018
+       type2  0.022+/-0.007  0.132+/-0.015  0.198+/-0.017  0.648+/-0.018
+       type3  0.006+/-0.003  0.186+/-0.019  0.140+/-0.010  0.668+/-0.015
+  Mean diagonal: 0.100 +/- 0.006
+
+  PSEUDOREPLICATION DIAGNOSTIC
+  (fraction of runs where comparison is significant)
+  Metric     Pair                Token sig   Prompt sig    Ratio
+  ------------------------------------------------------------
+  H          T1-T2                   50%          15%       3.3x
+  H          T1-T3                  100%          90%       1.1x
+  H          T2-T3                  100%          75%       1.3x
+
+  norm       T1-T2                   55%           5%      11.0x
+  norm       T1-T3                   30%           0%        inf
+  norm       T2-T3                   35%           0%        inf
+
+  max_sim    T1-T2                   50%           0%        inf
+  max_sim    T1-T3                   95%           5%      19.0x
+  max_sim    T2-T3                   75%           0%        inf
+
+============================================================================
+  WHITENED STABILITY SUMMARY
+============================================================================
+
+  Key claims and their stability across 20 runs:
+
+  Whitened:
+    Norm T1-T3: sig 0%, Holm 0%, median r=+0.036
+    Norm T2-T3: sig 0%, Holm 0%, median r=-0.062
+    Norm T1-T2: sig 5% (non-separation confirmed)
+    H omnibus: sig 90% (pseudoreplication artifact NOT confirmed)
+
+============================================================================
+END OF MULTI-RUN REPORT
+============================================================================

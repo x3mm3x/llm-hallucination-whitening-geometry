@@ -1,0 +1,91 @@
+============================================================================
+MULTI-RUN STABILITY ANALYSIS — WHITENED CONTEXTUAL
+K = 20 independent generation runs
+Prompts per group: N = 30
+Calibration: fixed (seed=42) | Generation seeds: 1..20
+============================================================================
+
+============================================================================
+  WHITENED EXPERIMENT
+============================================================================
+  Runtime per run: mean=317s, total=6346s
+
+  OMNIBUS KRUSKAL-WALLIS (prompt-level, N=30/group)
+  Metric       Median p              IQR   Sig rate   Perm med   Perm sig
+  --------------------------------------------------------------------
+  H              0.4783 [0.316, 0.844]       5%       0.4797       5%
+  norm           0.2716 [0.134, 0.459]      10%       0.2746      10%
+  max_sim        0.0819 [0.014, 0.208]      45%       0.0822      45%
+
+  PAIRWISE (prompt-level Mann-Whitney)
+  Metric   Pair                Med p    Sig   Holm    Med r     r SD   Perm sig
+  --------------------------------------------------------------------------
+  H        T1-T2              0.4097   20%   10%   +0.127    0.136      20%
+  H        T1-T3              0.6735    5%    5%   +0.061    0.108       5%
+  H        T2-T3              0.5016    0%    0%   -0.052    0.112       0%
+
+  norm     T1-T2              0.4871    5%    0%   +0.004    0.149       5%
+  norm     T1-T3              0.3413   10%   10%   +0.146    0.121      10%
+  norm     T2-T3              0.2254   10%    0%   +0.183    0.091      15%
+
+  max_sim  T1-T2              0.1603   35%   15%   +0.212    0.144      30%
+  max_sim  T1-T3              0.2526    5%    5%   -0.150    0.118       5%
+  max_sim  T2-T3              0.0372   60%   40%   -0.314    0.110      45%
+
+  CONDITION MEANS (prompt-level, across runs)
+  Metric                 Type 1             Type 2             Type 3
+  ------------------------------------------------------------------
+  H           0.1048 +/- 0.0013  0.1067 +/- 0.0013  0.1063 +/- 0.0012
+  norm       13.7310 +/- 0.1316 13.7192 +/- 0.1296 13.9969 +/- 0.1569
+  max_sim     0.1719 +/- 0.0034  0.1795 +/- 0.0041  0.1680 +/- 0.0033
+
+  CONFUSION MATRIX (mean +/- std across 20 runs)
+                         Z1             Z2             Z3            Unc
+  --------------------------------------------------------------------
+       type1  0.038+/-0.005  0.150+/-0.013  0.166+/-0.010  0.646+/-0.016
+       type2  0.037+/-0.005  0.164+/-0.010  0.153+/-0.010  0.646+/-0.015
+       type3  0.026+/-0.006  0.148+/-0.011  0.142+/-0.011  0.684+/-0.015
+  Mean diagonal: 0.114 +/- 0.006
+
+  PSEUDOREPLICATION DIAGNOSTIC
+  (fraction of runs where comparison is significant)
+  Metric     Pair                Token sig   Prompt sig    Ratio
+  ------------------------------------------------------------
+  H          T1-T2                   40%          20%       2.0x
+  H          T1-T3                   70%           5%      14.0x
+  H          T2-T3                   45%           0%        inf
+
+  norm       T1-T2                   30%           5%       6.0x
+  norm       T1-T3                   55%          10%       5.5x
+  norm       T2-T3                   65%          10%       6.5x
+
+  max_sim    T1-T2                   50%          35%       1.4x
+  max_sim    T1-T3                   60%           5%      12.0x
+  max_sim    T2-T3                   20%          60%       0.3x
+
+============================================================================
+  STABILITY SUMMARY
+============================================================================
+
+  Key claims and their stability across 20 runs (N=30/group):
+
+  TYPE 3 SEPARATIONS:
+    H        T1-T3    MW sig=   5%  Holm=   5%  r=+0.061  [null]
+    H        T2-T3    MW sig=   0%  Holm=   0%  r=-0.052  [null]
+    norm     T1-T3    MW sig=  10%  Holm=  10%  r=+0.146  [unstable]
+    norm     T2-T3    MW sig=  10%  Holm=   0%  r=+0.183  [null]
+    max_sim  T1-T3    MW sig=   5%  Holm=   5%  r=-0.150  [null]
+    max_sim  T2-T3    MW sig=  60%  Holm=  40%  r=-0.314  [unstable]
+
+  TYPE 1/2 NON-SEPARATION:
+    H        T1-T2    MW sig=  20%  Holm=  10%  r=+0.127  [unstable]
+    norm     T1-T2    MW sig=   5%  Holm=   0%  r=+0.004  [null]
+    max_sim  T1-T2    MW sig=  35%  Holm=  15%  r=+0.212  [unstable]
+
+  VERDICT:
+    Best Type 3 Holm rate:     40%  (WEAK)
+    Best Type 1/2 Holm rate:   15%  (NON-SEPARATION CONFIRMED)
+
+============================================================================
+END OF MULTI-RUN REPORT
+============================================================================
